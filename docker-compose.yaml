@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  nodejs-app:
+    build: .
+    container_name: nodejs-app
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=nhattan123
+      - DB_NAME=db_hoang
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: nhattan123
+      MYSQL_DATABASE: db_hoang
+    ports:
+      - "3312:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
